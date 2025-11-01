@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冰雪奇缘 - 角色介绍</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e6f7ff, #b3e0ff, #66c2ff);
+            color: #fff;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("res/p1.jpg");
+            background-size: cover;
+            z-index: -1;
+        }
+        
+        h1 {
+            font-size: 4.5rem;
+            margin-bottom: 25px;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+            letter-spacing: 3px;
+            color: #e3f2fd;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            color: #bbdefb;
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+        
+        .tagline {
+            font-size: 1.8rem;
+            color: #e1f5fe;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            letter-spacing: 1.5px;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 18px 35px;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1.5px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            font-size: 1.4rem;
+            color: #bbdefb;
+            letter-spacing: 1.5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: #fff;
+            font-size: 1.5rem;
+            animation: fall linear forwards;
+            z-index: 1000;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(105vh);
+            }
+        }
+        
+        /* 角色介绍页面特定样式 */
+        .characters-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .character-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .character-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        
+        .character-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .character-icon {
+            font-size: 4rem;
+            margin-right: 20px;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+        }
+        
+        .character-name {
+            font-size: 2.2rem;
+            color: #89D0FF;
+            margin-bottom: 5px;
+        }
+        
+        .character-title {
+            font-size: 1.4rem;
+            color: #917F82;
+            font-style: italic;
+        }
+        
+        .character-details {
+            flex: 1;
+        }
+        
+        .character-details h3 {
+            font-size: 1.6rem;
+            color: #B09A9E;
+            margin: 20px 0 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 5px;
+        }
+        
+        .character-details p {
+            font-size: 1.4rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+        
+        .character-traits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .trait {
+            background: rgba(137, 208, 255, 0.3);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-top: 40px;
+            text-align: center;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .character-quote {
+            font-style: italic;
+            color: #B59EA2;
+            border-left: 3px solid #89D0FF;
+            padding-left: 15px;
+            margin: 15px 0;
+            font-size: 1.3rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.8rem;
+            }
+            
+            .tagline {
+                font-size: 1.5rem;
+            }
+            
+            .nav-btn {
+                font-size: 1.3rem;
+                padding: 15px 25px;
+            }
+            
+            .character-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .character-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .character-name {
+                font-size: 1.8rem;
+            }
+        }
+		.character-icon {
+		    width: 80px;
+		    height: 80px;
+		    margin-right: 20px;
+		    border-radius: 50%;
+		    overflow: hidden; /* 确保图片在圆形区域内显示 */
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    background: rgba(255, 255, 255, 0.2);
+		    border: 2px solid rgba(255, 255, 255, 0.3);
+		}
+		
+		.character-icon img {
+		    width: 100%;
+		    height: 100%;
+		    object-fit: cover; /* 确保图片填充整个圆形区域 */
+		}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>冰雪奇缘</h1>
+            <div class="subtitle">角色介绍</div>
+            <p class="tagline">认识阿伦黛尔王国的英雄们，了解他们独特的个性和故事</p>
+        </header>
+        
+        <div class="navigation">
+            <a href="index.html" class="nav-btn">返回首页</a>
+            <a href="story.html" class="nav-btn">故事详情</a>
+            <a href="music.html" class="nav-btn">主题音乐</a>
+            <a href="gallery.html" class="nav-btn">精美图集</a>
+            <a href="games.html" class="nav-btn">冰雪游戏</a>
+        </div>
+        
+        <div class="characters-container">
+            <!-- 艾莎 -->
+            <div class="character-card">
+                <div class="character-header">
+                    <div class="character-icon">
+						<img src="res/p3.jpg" alt="艾莎">
+					</div>
+                    <div>
+                        <div class="character-name">艾莎</div>
+                        <div class="character-title">阿伦黛尔女王 | 冰雪魔法师</div>
+                    </div>
+                </div>
+                <div class="character-details">
+                    <p>阿伦黛尔的长公主，天生拥有创造和控制冰雪的魔法能力。性格内敛优雅，因害怕伤害他人而长期封闭自我。</p>
+                    
+                    <h3>背景故事</h3>
+                    <p>童年时因意外用魔法伤到妹妹安娜，从此与外界隔离。在加冕日情绪失控暴露能力，使王国陷入永恒寒冬，后逃入北山建造冰雪宫殿。</p>
+                    
+                    <h3>性格特点</h3>
+                    <div class="character-traits">
+                        <span class="trait">优雅高贵</span>
+                        <span class="trait">内心善良</span>
+                        <span class="trait">责任感强</span>
+                        <span class="trait">富有创造力</span>
+                    </div>
+                    
+                    <div class="character-quote">"随它吧，随它吧，转身不再牵挂"</div>
+                </div>
+            </div>
+            
+            <!-- 安娜 -->
+            <div class="character-card">
+                <div class="character-header">
+                    <div class="character-icon">
+						<img src="res/p4.jpg" alt="安娜">
+					</div>
+                    <div>
+                        <div class="character-name">安娜</div>
+                        <div class="character-title">阿伦黛尔公主 | 勇敢的冒险家</div>
+                    </div>
+                </div>
+                <div class="character-details">
+                    <p>阿伦黛尔的次公主，活泼开朗，充满好奇心。在姐姐隔离期间独自长大，渴望亲情与他人的陪伴。</p>
+                    
+                    <h3>背景故事</h3>
+                    <p>为了寻找姐姐并解除王国的寒冬，独自踏上冒险旅程。途中结识克斯托夫和雪宝，最终用自我牺牲的真爱之举拯救了姐姐。</p>
+                    
+                    <h3>性格特点</h3>
+                    <div class="character-traits">
+                        <span class="trait">活泼开朗</span>
+                        <span class="trait">勇敢无畏</span>
+                        <span class="trait">重情重义</span>
+                        <span class="trait">有点冒失</span>
+                    </div>
+                    
+                    <div class="character-quote">"你想堆雪人吗？快来吧我们一起来玩"</div>
+                </div>
+            </div>
+            
+            <!-- 克斯托夫 -->
+            <div class="character-card">
+                <div class="character-header">
+                    <div class="character-icon">
+						<img src="res/p5.jpg" alt="克斯托夫">
+					️</div>
+                    <div>
+                        <div class="character-name">克斯托夫</div>
+                        <div class="character-title">冰块商人 | 真诚的伙伴</div>
+                    </div>
+                </div>
+                <div class="character-details">
+                    <p>生活在雪山中的冰块商人，外表粗犷但内心温柔。与驯鹿斯文相依为命，有着丰富的野外生存经验。</p>
+                    
+                    <h3>背景故事</h3>
+                    <p>最初只是为了报酬而帮助安娜寻找艾莎，但在旅途中逐渐被安娜的真诚打动，最终成为她最重要的伙伴和爱人。</p>
+                    
+                    <h3>性格特点</h3>
+                    <div class="character-traits">
+                        <span class="trait">务实可靠</span>
+                        <span class="trait">内心柔软</span>
+                        <span class="trait">忠诚善良</span>
+                        <span class="trait">不善表达</span>
+                    </div>
+                    
+                    <div class="character-quote">"有些人值得你为之融化"</div>
+                </div>
+            </div>
+            
+            <!-- 雪宝 -->
+            <div class="character-card">
+                <div class="character-header">
+                    <div class="character-icon">
+						<img src="res/p6.jpg" alt="雪宝">
+					️</div>
+                    <div>
+                        <div class="character-name">雪宝</div>
+                        <div class="character-title">会说话的雪人 | 欢乐使者</div>
+                    </div>
+                </div>
+                <div class="character-details">
+                    <p>由艾莎的魔法创造的天真雪人，性格乐观开朗，拥有重新组装身体的能力。虽然是个雪人，却无比向往夏天。</p>
+                    
+                    <h3>背景故事</h3>
+                    <p>原本是艾莎和安娜童年时一起堆的雪人，在艾莎逃往北山时被魔法赋予生命，成为安娜冒险路上的重要伙伴。</p>
+                    
+                    <h3>性格特点</h3>
+                    <div class="character-traits">
+                        <span class="trait">天真烂漫</span>
+                        <span class="trait">乐观积极</span>
+                        <span class="trait">忠诚可靠</span>
+                        <span class="trait">幽默风趣</span>
+                    </div>
+                    
+                    <div class="character-quote">"我超爱温暖的拥抱！"</div>
+                </div>
+            </div>
+            
+            <!-- 汉斯 -->
+            <div class="character-card">
+                <div class="character-header">
+                    <div class="character-icon">
+						<img src="res/p7.jpg" alt="汉斯">
+					</div>
+                    <div>
+                        <div class="character-name">汉斯王子</div>
+                        <div class="character-title">南方群岛第十三王子 | 野心家</div>
+                    </div>
+                </div>
+                <div class="character-details">
+                    <p>来自南方群岛的王子，外表英俊优雅，实则工于心计。为了获得权力不择手段，是故事中的主要反派。</p>
+                    
+                    <h3>背景故事</h3>
+                    <p>作为第十三位王子几乎没有继承王位的机会，于是计划通过娶安娜来夺取阿伦黛尔的王位，最终阴谋败露被遣返回国。</p>
+                    
+                    <h3>性格特点</h3>
+                    <div class="character-traits">
+                        <span class="trait">工于心计</span>
+                        <span class="trait">善于伪装</span>
+                        <span class="trait">野心勃勃</span>
+                        <span class="trait">冷酷无情</span>
+                    </div>
+                    
+                    <div class="character-quote">"想象一下，我们可以一起开启那么多扇门"</div>
+                </div>
+            </div>
+            
+            <!-- 斯文 -->
+            <div class="character-card">
+                <div class="character-header">
+                    <div class="character-icon">
+						<img src="res/p8.jpg" alt="斯文">
+					</div>
+                    <div>
+                        <div class="character-name">斯文</div>
+                        <div class="character-title">忠诚的驯鹿 | 最佳伙伴</div>
+                    </div>
+                </div>
+                <div class="character-details">
+                    <p>克斯托夫的驯鹿伙伴和最好的朋友，虽然不会说话但通人性，在冒险中提供了重要的帮助。</p>
+                    
+                    <h3>背景故事</h3>
+                    <p>从小与克斯托夫一起长大，陪伴他从事冰块生意。在安娜的冒险中成为重要的交通工具和战斗伙伴。</p>
+                    
+                    <h3>性格特点</h3>
+                    <div class="character-traits">
+                        <span class="trait">忠诚可靠</span>
+                        <span class="trait">勇敢无畏</span>
+                        <span class="trait">有点贪吃</span>
+                        <span class="trait">通晓人性</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="index.html" class="back-btn">← 返回首页</a>
+        </div>
+        
+        <footer>
+            <p>冰雪奇缘专题页面 | 探索真爱的力量，感受冰雪的魔法</p>
+        </footer>
+    </div>
+
+    <script>
+        // 创建雪花效果
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.innerHTML = '❄';
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 5 + 5 + 's';
+            snowflake.style.opacity = Math.random() * 0.6 + 0.4;
+            snowflake.style.fontSize = Math.random() * 15 + 10 + 'px';
+            
+            document.body.appendChild(snowflake);
+            
+            setTimeout(() => {
+                snowflake.remove();
+            }, 10000);
+        }
+        
+        // 定期生成雪花
+        setInterval(createSnowflake, 200);
+        
+        // 初始生成一些雪花
+        for (let i = 0; i < 30; i++) {
+            setTimeout(createSnowflake, i * 200);
+        }
+        
+        // 角色卡片动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.character-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+        });
+    </script>
+</body>
+</html>

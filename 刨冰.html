@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冰雪刨冰</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e0f7fa 0%, #b3e5fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #01579b;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(33, 150, 243, 0.3);
+            border: 5px solid #80deea;
+            position: relative;
+        }
+        
+        .snow-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .snowflake {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation-name: snowfall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+        
+        @keyframes snowfall {
+            0% { transform: translateY(-100px) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+        
+        .header {
+            background: linear-gradient(to right, #4fc3f7, #29b6f6);
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            border-bottom: 5px solid #0288d1;
+        }
+        
+        .header h1 {
+            font-size: 42px;
+            color: white;
+            text-shadow: 3px 3px 0 #0288d1;
+            letter-spacing: 2px;
+        }
+        
+        .header p {
+            margin-top: 10px;
+            font-size: 20px;
+            color: #e1f5fe;
+        }
+        
+        .game-container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 25px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .customer-area {
+            flex: 1;
+            min-width: 300px;
+            padding: 15px;
+            background-color: rgba(179, 229, 252, 0.3);
+            border-radius: 20px;
+            margin-right: 20px;
+            border: 3px solid #4fc3f7;
+        }
+        
+        .customer-box {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .customer {
+            font-size: 120px;
+            color: #29b6f6;
+            margin: 10px 0;
+        }
+        
+        .order-box {
+            background-color: #e1f5fe;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 2px dashed #4fc3f7;
+        }
+        
+        .order-title {
+            font-size: 22px;
+            color: #0277bd;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .order-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 5px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        
+        .order-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            width: 40px;
+            text-align: center;
+        }
+        
+        .making-area {
+            flex: 2;
+            min-width: 300px;
+            padding: 15px;
+            background-color: rgba(179, 229, 252, 0.3);
+            border-radius: 20px;
+            border: 3px solid #4fc3f7;
+            position: relative;
+        }
+        
+        .bowl-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 30px;
+        }
+        
+        .bowl {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            height: 150px;
+            background-color: #e0f7fa;
+            border-radius: 0 0 125px 125px;
+            border: 8px solid #b3e5fc;
+            z-index: 3;
+            box-shadow: inset 0 0 20px rgba(33, 150, 243, 0.2);
+        }
+        
+        .ice-content {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 0;
+            background: linear-gradient(to bottom, #ffffff, #e3f2fd);
+            border-radius: 100px 100px 0 0;
+            overflow: visible;
+            z-index: 4;
+            transition: height 0.5s;
+        }
+        
+        .ice-layer {
+            position: absolute;
+            width: 100%;
+            height: 20px;
+            left: 0;
+            background: linear-gradient(to bottom, #ffffff, #e3f2fd);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.2);
+        }
+        
+        .toppings-layer {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 120px;
+            z-index: 10;
+            pointer-events: none;
+        }
+        
+        .toppings-area {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .topping-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            border: 3px solid white;
+            cursor: grab;
+            font-size: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+            touch-action: none;
+        }
+        
+        .topping-btn:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+        
+        .topping-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .controls-area {
+            flex: 1;
+            min-width: 300px;
+            padding: 15px;
+            background-color: rgba(179, 229, 252, 0.3);
+            border-radius: 20px;
+            margin-left: 20px;
+            border: 3px solid #4fc3f7;
+        }
+        
+        .stats {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0f7fa;
+        }
+        
+        .stat-label {
+            font-weight: bold;
+            color: #0277bd;
+        }
+        
+        .stat-value {
+            font-weight: bold;
+            font-size: 24px;
+            color: #4fc3f7;
+        }
+        
+        .controls {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .control-title {
+            font-size: 22px;
+            color: #0277bd;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .control-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .control-btn:active {
+            transform: translateY(2px);
+        }
+        
+        .control-btn i {
+            margin-right: 10px;
+        }
+        
+        .btn-make {
+            background: linear-gradient(to right, #4fc3f7, #29b6f6);
+            color: white;
+        }
+        
+        .btn-serve {
+            background: linear-gradient(to right, #66bb6a, #4caf50);
+            color: white;
+        }
+        
+        .btn-clear {
+            background: linear-gradient(to right, #ff9800, #f57c00);
+            color: white;
+        }
+        
+        .control-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .instructions {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .instructions h3 {
+            color: #0277bd;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .game-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 25px;
+            background-color: rgba(179, 229, 252, 0.5);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .game-btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .game-btn i {
+            margin-right: 10px;
+        }
+        
+        .btn-start {
+            background: linear-gradient(to right, #4fc3f7, #29b6f6);
+            color: white;
+            flex: 2;
+            margin-right: 15px;
+        }
+        
+        .btn-reset {
+            background: linear-gradient(to right, #ff9800, #f57c00);
+            color: white;
+            flex: 1;
+            margin-right: 15px;
+        }
+        
+        .btn-help {
+            background: linear-gradient(to right, #66bb6a, #4caf50);
+            color: white;
+            flex: 1;
+        }
+        
+        .game-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(179, 229, 252, 0.7);
+            font-size: 16px;
+            color: #01579b;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .footer a {
+            color: #0288d1;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 30px 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            z-index: 100;
+            display: none;
+            border: 5px solid #4fc3f7;
+            max-width: 80%;
+        }
+        
+        .message h2 {
+            color: #0277bd;
+            margin-bottom: 15px;
+            font-size: 36px;
+        }
+        
+        .message p {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #01579b;
+        }
+        
+        .topping-element {
+            position: absolute;
+            z-index: 11;
+            pointer-events: none;
+            transition: transform 0.3s;
+        }
+        
+        .strawberry {
+            width: 30px;
+            height: 30px;
+            background-color: #ff4081;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: relative;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .strawberry:before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            background-color: #4caf50;
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px #388e3c;
+        }
+        
+        .strawberry:after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px;
+            height: 8px;
+            background-color: #4caf50;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        
+        .blueberry {
+            width: 25px;
+            height: 25px;
+            background-color: #536dfe;
+            border-radius: 50%;
+            box-shadow: inset -3px -3px 8px rgba(0,0,0,0.3), 0 2px 5px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .blueberry:before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 5px;
+            height: 5px;
+            background-color: #e8eaf6;
+            border-radius: 50%;
+        }
+        
+        .chocolate {
+            width: 28px;
+            height: 20px;
+            background-color: #5d4037;
+            border-radius: 5px;
+            box-shadow: inset -3px -3px 5px rgba(0,0,0,0.4), 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .chocolate:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            background-color: #3e2723;
+            top: 5px;
+            left: 0;
+        }
+        
+        .matcha {
+            width: 30px;
+            height: 30px;
+            background-color: #4caf50;
+            border-radius: 50%;
+            box-shadow: inset -3px -3px 8px rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .matcha:before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #1b5e20;
+            border-radius: 50%;
+            top: 5px;
+            left: 5px;
+        }
+        
+        .vanilla {
+            width: 30px;
+            height: 30px;
+            background-color: #ffecb3;
+            border-radius: 50%;
+            box-shadow: inset -3px -3px 8px rgba(0,0,0,0.1), 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .vanilla:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            background-color: #ffd54f;
+            border-radius: 5px;
+            top: 8px;
+            left: 0;
+        }
+        
+        .mango {
+            width: 35px;
+            height: 25px;
+            background-color: #ffb300;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .mango:before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ff8f00;
+            border-radius: 50%;
+            top: 5px;
+            left: 5px;
+        }
+        
+        .honey {
+            width: 30px;
+            height: 20px;
+            background-color: #ffd54f;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            box-shadow: inset -3px -3px 5px rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .honey:before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 10px;
+            background-color: #ffb300;
+            border-radius: 50%;
+            top: 5px;
+            left: 8px;
+        }
+        
+        .sugar {
+            width: 25px;
+            height: 25px;
+            background-color: #f8bbd0;
+            border-radius: 50%;
+            box-shadow: inset -3px -3px 5px rgba(0,0,0,0.1), 0 0 5px rgba(255,255,255,0.8), 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .sugar:before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f06292;
+            border-radius: 50%;
+            top: 7px;
+            left: 7px;
+        }
+        
+        .ice-cube {
+            width: 25px;
+            height: 25px;
+            background-color: #e1f5fe;
+            border-radius: 5px;
+            box-shadow: inset 0 0 10px rgba(33, 150, 243, 0.3), 0 0 5px rgba(255,255,255,0.8), 0 2px 5px rgba(0,0,0,0.2);
+            border: 1px solid rgba(33, 150, 243, 0.3);
+        }
+        
+        .status-message {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 18px;
+            z-index: 10;
+            display: none;
+        }
+        
+        .drag-overlay {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            display: none;
+        }
+        
+        .dragging {
+            opacity: 0.7;
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            z-index: 100;
+        }
+        
+        .drag-instruction {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 16px;
+            color: #0277bd;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 1100px) {
+            .game-container {
+                flex-direction: column;
+            }
+            
+            .customer-area, .controls-area {
+                margin: 0 0 20px 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 32px;
+            }
+            
+            .game-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .game-btn {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .bowl-container {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .bowl {
+                width: 200px;
+                height: 120px;
+            }
+            
+            .ice-content {
+                width: 160px;
+            }
+            
+            .toppings-layer {
+                width: 160px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 28px;
+            }
+            
+            .topping-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 22px;
+            }
+            
+            .customer {
+                font-size: 80px;
+            }
+        }
+        
+        .topping-btn .topping-visual {
+            font-size: 30px;
+        }
+        
+        @keyframes dropIn {
+            0% { transform: translateY(-50px) scale(0.5); opacity: 0; }
+            70% { transform: translateY(10px) scale(1.1); }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(5deg); }
+        }
+        
+        .layer-counter {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #01579b;
+            z-index: 12;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="snow-bg" id="snow-bg"></div>
+        
+        <div class="header">
+            <h1><i class="fas fa-snowflake"></i> 冰雪刨冰</h1>
+            <p>根据顾客需求制作美味的刨冰，获得高分！</p>
+        </div>
+        
+        <div class="game-container">
+            <div class="customer-area">
+                <div class="customer-box">
+                    <div>
+                        <div class="customer">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <h2>顾客订单</h2>
+                    </div>
+                    
+                    <div class="order-box">
+                        <div class="order-title">订单需求：</div>
+                        <div id="order-list">
+                            <!-- 订单内容将通过JS动态生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="making-area">
+                <h2 style="text-align: center; color: #0277bd; margin-bottom: 20px;">制作区</h2>
+                
+                <div class="bowl-container">
+                    <div class="bowl" id="bowl"></div>
+                    <div class="ice-content" id="ice-content">
+                        <!-- 刨冰层将通过JS动态添加 -->
+                    </div>
+                    <div class="toppings-layer" id="toppings-layer">
+                        <!-- 配料将放在这个层中，在冰层上面 -->
+                        <div id="topping-counter" class="layer-counter">配料: 0</div>
+                    </div>
+                </div>
+                
+                <h3 style="text-align: center; color: #0277bd; margin-bottom: 15px;">选择配料（拖动到碗中）</h3>
+                <div class="drag-instruction">拖拽配料到碗中，点击"添加冰块"增加冰沙</div>
+                <div class="toppings-area" id="toppings-area">
+                    <!-- 配料按钮将通过JS动态生成 -->
+                </div>
+                
+                <div id="status-message" class="status-message"></div>
+            </div>
+            
+            <div class="controls-area">
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-label">分数</span>
+                        <span class="stat-value" id="score">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">时间</span>
+                        <span class="stat-value" id="time">60</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">订单</span>
+                        <span class="stat-value" id="order-count">0/5</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">准确率</span>
+                        <span class="stat-value" id="accuracy">100%</span>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <div class="control-title">制作控制</div>
+                    <button class="control-btn btn-make" id="make-ice-btn">
+                        <i class="fas fa-snowflake"></i> 添加冰块
+                    </button>
+                    <button class="control-btn btn-serve" id="serve-btn">
+                        <i class="fas fa-concierge-bell"></i> 上菜给顾客
+                    </button>
+                    <button class="control-btn btn-clear" id="clear-btn">
+                        <i class="fas fa-trash-alt"></i> 清空碗
+                    </button>
+                </div>
+                
+                <div class="instructions">
+                    <h3>游戏说明</h3>
+                    <ul>
+                        <li>根据顾客订单制作刨冰</li>
+                        <li>点击"添加冰块"增加冰沙</li>
+                        <li>拖动配料添加到刨冰上</li>
+                        <li>完成后点击"上菜给顾客"</li>
+                        <li>匹配度越高，得分越多</li>
+                        <li>完成5个订单即可获胜</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="game-buttons">
+            <button class="game-btn btn-start" id="start-btn">
+                <i class="fas fa-play"></i> 开始游戏
+            </button>
+            <button class="game-btn btn-reset" id="reset-btn">
+                <i class="fas fa-sync-alt"></i> 重新开始
+            </button>
+            <button class="game-btn btn-help" id="help-btn">
+                <i class="fas fa-question-circle"></i> 游戏帮助
+            </button>
+        </div>
+        
+        <div class="footer">
+            <p>©冰雪刨冰小游戏 |走进冰雪奇缘 </p>
+        </div>
+    </div>
+    
+    <div class="message" id="message">
+        <h2 id="message-title">游戏结束</h2>
+        <p id="message-text">你完成了所有订单！</p>
+        <div id="final-score" style="font-size: 36px; color: #4fc3f7; margin-bottom: 20px;">得分: 0</div>
+        <button class="game-btn btn-start" id="restart-btn">
+            <i class="fas fa-redo"></i> 重新开始
+        </button>
+    </div>
+
+    <div class="drag-overlay" id="drag-overlay"></div>
+
+    <script>
+        // 游戏变量
+        const iceContent = document.getElementById('ice-content');
+        const toppingsLayer = document.getElementById('toppings-layer');
+        const toppingCounter = document.getElementById('topping-counter');
+        const bowl = document.getElementById('bowl');
+        const toppingsArea = document.getElementById('toppings-area');
+        const orderList = document.getElementById('order-list');
+        const scoreElement = document.getElementById('score');
+        const timeElement = document.getElementById('time');
+        const orderCountElement = document.getElementById('order-count');
+        const accuracyElement = document.getElementById('accuracy');
+        const startBtn = document.getElementById('start-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const helpBtn = document.getElementById('help-btn');
+        const makeIceBtn = document.getElementById('make-ice-btn');
+        const serveBtn = document.getElementById('serve-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const message = document.getElementById('message');
+        const messageTitle = document.getElementById('message-title');
+        const messageText = document.getElementById('message-text');
+        const finalScoreElement = document.getElementById('final-score');
+        const restartBtn = document.getElementById('restart-btn');
+        const snowBg = document.getElementById('snow-bg');
+        const statusMessage = document.getElementById('status-message');
+        const dragOverlay = document.getElementById('drag-overlay');
+        
+        // 游戏状态
+        let gameActive = false;
+        let score = 0;
+        let timeLeft = 60;
+        let ordersCompleted = 0;
+        let totalOrders = 5;
+        let iceHeight = 0;
+        let maxIceHeight = 120;
+        let currentOrder = [];
+        let addedToppings = [];
+        let toppingCount = 0;
+        let gameTimer;
+        
+        // 拖拽相关变量
+        let currentDragElement = null;
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+        
+        // 配料数据 - 现在包括冰块
+        const toppings = [
+            { id: 0, name: "冰块", color: "#e1f5fe", icon: "fa-snowflake", emoji: "❄️", className: "ice-cube" },
+            { id: 1, name: "草莓", color: "#ff4081", icon: "fa-strawberry", emoji: "🍓", className: "strawberry" },
+            { id: 2, name: "蓝莓", color: "#536dfe", icon: "fa-seedling", emoji: "🫐", className: "blueberry" },
+            { id: 3, name: "巧克力", color: "#5d4037", icon: "fa-cookie-bite", emoji: "🍫", className: "chocolate" },
+            { id: 4, name: "抹茶", color: "#4caf50", icon: "fa-leaf", emoji: "🍵", className: "matcha" },
+            { id: 5, name: "香草", color: "#ffecb3", icon: "fa-ice-cream", emoji: "🍨", className: "vanilla" },
+            { id: 6, name: "芒果", color: "#ffb300", icon: "fa-lemon", emoji: "🥭", className: "mango" },
+            { id: 7, name: "蜂蜜", color: "#ffd54f", icon: "fa-honey-pot", emoji: "🍯", className: "honey" },
+            { id: 8, name: "糖粒", color: "#f8bbd0", icon: "fa-candy-cane", emoji: "🍬", className: "sugar" }
+        ];
+        
+        // 初始化游戏
+        function initGame() {
+            // 重置游戏状态
+            score = 0;
+            timeLeft = 60;
+            ordersCompleted = 0;
+            iceHeight = 0;
+            currentOrder = [];
+            addedToppings = [];
+            toppingCount = 0;
+            
+            // 启用/禁用按钮
+            makeIceBtn.disabled = false;
+            serveBtn.disabled = false;
+            clearBtn.disabled = false;
+            
+            // 更新UI
+            updateUI();
+            
+            // 清空刨冰碗
+            clearIce();
+            
+            // 生成雪花背景
+            createSnowflakes();
+            
+            // 生成配料按钮
+            generateToppingButtons();
+            
+            // 生成第一个订单
+            generateOrder();
+            
+            // 设置拖拽事件
+            setupDragAndDrop();
+            
+            // 显示状态消息
+            showStatusMessage("游戏已初始化，点击开始游戏按钮开始！");
+        }
+        
+        // 创建雪花背景
+        function createSnowflakes() {
+            snowBg.innerHTML = '';
+            for (let i = 0; i < 50; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                
+                // 随机大小
+                const size = Math.random() * 10 + 5;
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                
+                // 随机位置
+                snowflake.style.left = `${Math.random() * 100}%`;
+                
+                // 随机动画时长和延迟
+                const duration = Math.random() * 5 + 5;
+                const delay = Math.random() * 5;
+                snowflake.style.animationDuration = `${duration}s`;
+                snowflake.style.animationDelay = `${delay}s`;
+                
+                snowBg.appendChild(snowflake);
+            }
+        }
+        
+        // 生成配料按钮
+        function generateToppingButtons() {
+            toppingsArea.innerHTML = '';
+            
+            toppings.forEach((topping, index) => {
+                const button = document.createElement('div');
+                button.className = 'topping-btn';
+                button.style.backgroundColor = topping.color;
+                button.innerHTML = `<span class="topping-visual">${topping.emoji}</span>`;
+                button.title = `${topping.name} (拖动到碗中)`;
+                button.dataset.toppingId = topping.id;
+                button.dataset.toppingName = topping.name;
+                button.dataset.toppingClass = topping.className;
+                
+                // 设置拖拽属性
+                button.draggable = true;
+                
+                toppingsArea.appendChild(button);
+            });
+        }
+        
+        // 设置拖拽事件
+        function setupDragAndDrop() {
+            // 获取所有配料按钮
+            const toppingButtons = document.querySelectorAll('.topping-btn');
+            const bowlContainer = document.querySelector('.bowl-container');
+            
+            // 鼠标事件处理拖拽
+            toppingButtons.forEach(button => {
+                // 鼠标按下开始拖拽
+                button.addEventListener('mousedown', startDrag);
+                // 触摸事件支持移动设备
+                button.addEventListener('touchstart', startDragTouch);
+            });
+            
+            // 监听鼠标移动和释放
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', stopDrag);
+            
+            // 监听触摸移动和结束
+            document.addEventListener('touchmove', dragTouch);
+            document.addEventListener('touchend', stopDragTouch);
+        }
+        
+        // 开始拖拽（鼠标）
+        function startDrag(e) {
+            if (!gameActive) {
+                showStatusMessage("请先开始游戏！");
+                return;
+            }
+            
+            const toppingId = parseInt(e.currentTarget.dataset.toppingId);
+            const topping = toppings.find(t => t.id === toppingId);
+            
+            if (topping.id === 0) {
+                // 冰块特殊处理，不拖拽，直接添加
+                makeIce();
+                return;
+            }
+            
+            if (iceHeight === 0) {
+                showStatusMessage("请先添加冰块！");
+                return;
+            }
+            
+            currentDragElement = e.currentTarget;
+            const rect = currentDragElement.getBoundingClientRect();
+            dragOffsetX = e.clientX - rect.left;
+            dragOffsetY = e.clientY - rect.top;
+            
+            // 创建拖拽副本
+            createDragClone(e.clientX, e.clientY, topping);
+            
+            // 显示拖拽遮罩层
+            dragOverlay.style.display = 'block';
+            
+            e.preventDefault();
+        }
+        
+        // 开始拖拽（触摸）
+        function startDragTouch(e) {
+            if (!gameActive) {
+                showStatusMessage("请先开始游戏！");
+                return;
+            }
+            
+            const touch = e.touches[0];
+            const toppingId = parseInt(e.currentTarget.dataset.toppingId);
+            const topping = toppings.find(t => t.id === toppingId);
+            
+            if (topping.id === 0) {
+                // 冰块特殊处理，不拖拽，直接添加
+                makeIce();
+                return;
+            }
+            
+            if (iceHeight === 0) {
+                showStatusMessage("请先添加冰块！");
+                return;
+            }
+            
+            currentDragElement = e.currentTarget;
+            const rect = currentDragElement.getBoundingClientRect();
+            dragOffsetX = touch.clientX - rect.left;
+            dragOffsetY = touch.clientY - rect.top;
+            
+            // 创建拖拽副本
+            createDragClone(touch.clientX, touch.clientY, topping);
+            
+            // 显示拖拽遮罩层
+            dragOverlay.style.display = 'block';
+            
+            e.preventDefault();
+        }
+        
+        // 创建拖拽副本
+        function createDragClone(x, y, topping) {
+            const clone = document.createElement('div');
+            clone.className = `topping-element ${topping.className}`;
+            clone.style.position = 'fixed';
+            clone.style.left = `${x - 15}px`;
+            clone.style.top = `${y - 15}px`;
+            clone.style.width = '30px';
+            clone.style.height = '30px';
+            clone.style.zIndex = '1000';
+            clone.style.opacity = '0.8';
+            clone.style.pointerEvents = 'none';
+            clone.id = 'drag-clone';
+            clone.dataset.toppingId = topping.id;
+            clone.dataset.toppingName = topping.name;
+            clone.dataset.toppingClass = topping.className;
+            
+            document.body.appendChild(clone);
+        }
+        
+        // 拖拽中（鼠标）
+        function drag(e) {
+            if (!currentDragElement) return;
+            
+            const clone = document.getElementById('drag-clone');
+            if (clone) {
+                clone.style.left = `${e.clientX - 15}px`;
+                clone.style.top = `${e.clientY - 15}px`;
+            }
+            
+            e.preventDefault();
+        }
+        
+        // 拖拽中（触摸）
+        function dragTouch(e) {
+            if (!currentDragElement) return;
+            
+            const touch = e.touches[0];
+            const clone = document.getElementById('drag-clone');
+            if (clone) {
+                clone.style.left = `${touch.clientX - 15}px`;
+                clone.style.top = `${touch.clientY - 15}px`;
+            }
+            
+            e.preventDefault();
+        }
+        
+        // 停止拖拽（鼠标）
+        function stopDrag(e) {
+            if (!currentDragElement) return;
+            
+            const clone = document.getElementById('drag-clone');
+            const bowlRect = bowl.getBoundingClientRect();
+            
+            // 检查是否拖拽到碗中
+            if (clone && 
+                e.clientX >= bowlRect.left && 
+                e.clientX <= bowlRect.right && 
+                e.clientY >= bowlRect.top && 
+                e.clientY <= bowlRect.bottom) {
+                
+                // 获取配料信息
+                const toppingId = parseInt(clone.dataset.toppingId);
+                const topping = toppings.find(t => t.id === toppingId);
+                
+                // 添加配料到碗中
+                addTopping(topping, e.clientX - bowlRect.left, e.clientY - bowlRect.top);
+            }
+            
+            // 清理拖拽状态
+            cleanupDrag();
+        }
+        
+        // 停止拖拽（触摸）
+        function stopDragTouch(e) {
+            if (!currentDragElement) return;
+            
+            const touch = e.changedTouches[0];
+            const clone = document.getElementById('drag-clone');
+            const bowlRect = bowl.getBoundingClientRect();
+            
+            // 检查是否拖拽到碗中
+            if (clone && 
+                touch.clientX >= bowlRect.left && 
+                touch.clientX <= bowlRect.right && 
+                touch.clientY >= bowlRect.top && 
+                touch.clientY <= bowlRect.bottom) {
+                
+                // 获取配料信息
+                const toppingId = parseInt(clone.dataset.toppingId);
+                const topping = toppings.find(t => t.id === toppingId);
+                
+                // 添加配料到碗中
+                addTopping(topping, touch.clientX - bowlRect.left, touch.clientY - bowlRect.top);
+            }
+            
+            // 清理拖拽状态
+            cleanupDrag();
+        }
+        
+        // 清理拖拽状态
+        function cleanupDrag() {
+            // 移除拖拽副本
+            const clone = document.getElementById('drag-clone');
+            if (clone) {
+                clone.remove();
+            }
+            
+            // 重置拖拽变量
+            currentDragElement = null;
+            dragOffsetX = 0;
+            dragOffsetY = 0;
+            
+            // 隐藏拖拽遮罩层
+            dragOverlay.style.display = 'none';
+        }
+        
+        // 生成随机订单
+        function generateOrder() {
+            currentOrder = [];
+            
+            // 随机选择2-4种配料（不包括冰块）
+            const numToppings = Math.floor(Math.random() * 3) + 2;
+            // 排除冰块（id为0）
+            const availableToppings = toppings.filter(t => t.id !== 0);
+            const shuffledToppings = [...availableToppings].sort(() => 0.5 - Math.random());
+            
+            for (let i = 0; i < numToppings; i++) {
+                currentOrder.push(shuffledToppings[i]);
+            }
+            
+            // 显示订单
+            displayOrder();
+            
+            // 显示状态消息
+            showStatusMessage("新订单已生成！");
+        }
+        
+        // 显示订单
+        function displayOrder() {
+            orderList.innerHTML = '';
+            
+            currentOrder.forEach(topping => {
+                const orderItem = document.createElement('div');
+                orderItem.className = 'order-item';
+                orderItem.innerHTML = `
+                    <div class="order-icon">${topping.emoji}</div>
+                    <div>${topping.name}</div>
+                `;
+                orderList.appendChild(orderItem);
+            });
+        }
+        
+        // 制作刨冰 - 添加冰块
+        function makeIce() {
+            if (!gameActive) {
+                showStatusMessage("请先开始游戏！");
+                return;
+            }
+            
+            if (iceHeight >= maxIceHeight) {
+                showStatusMessage("碗已经满了！");
+                return;
+            }
+            
+            // 增加冰的高度
+            iceHeight += 20;
+            iceContent.style.height = `${iceHeight}px`;
+            
+            // 添加冰层
+            const iceLayer = document.createElement('div');
+            iceLayer.className = 'ice-layer';
+            iceLayer.style.top = `${iceHeight - 20}px`;
+            iceContent.appendChild(iceLayer);
+            
+            // 添加一些冰块到配料层中（最上层）
+            for (let i = 0; i < 3; i++) {
+                const iceCube = document.createElement('div');
+                iceCube.className = 'topping-element ice-cube';
+                iceCube.style.position = 'absolute';
+                iceCube.style.width = '20px';
+                iceCube.style.height = '20px';
+                
+                // 随机位置
+                const leftPos = Math.random() * 70 + 15;
+                const topPos = Math.random() * iceHeight * 0.8 + 10;
+                
+                iceCube.style.left = `${leftPos}%`;
+                iceCube.style.top = `${topPos}px`;
+                iceCube.style.animation = 'dropIn 0.5s ease-out, float 3s ease-in-out infinite';
+                iceCube.style.animationDelay = '0s, 0.5s';
+                
+                toppingsLayer.appendChild(iceCube);
+            }
+            
+            // 显示状态消息
+            showStatusMessage("冰块添加成功！");
+            
+            // 添加音效（模拟）
+            playSound('crunch');
+        }
+        
+        // 添加配料（通过拖拽）
+        function addTopping(topping, x, y) {
+            if (!gameActive) {
+                showStatusMessage("请先开始游戏！");
+                return;
+            }
+            
+            if (iceHeight === 0) {
+                showStatusMessage("请先添加冰块！");
+                return;
+            }
+            
+            // 记录添加的配料
+            addedToppings.push(topping);
+            toppingCount++;
+            toppingCounter.textContent = `配料: ${toppingCount}`;
+            
+            // 在配料层（最上层）显示配料
+            const toppingElement = document.createElement('div');
+            toppingElement.className = `topping-element ${topping.className}`;
+            toppingElement.style.position = 'absolute';
+            
+            // 随机大小
+            const size = Math.random() * 10 + 20;
+            toppingElement.style.width = `${size}px`;
+            toppingElement.style.height = `${size}px`;
+            
+            // 计算相对于碗的位置
+            const bowlRect = bowl.getBoundingClientRect();
+            const toppingsLayerRect = toppingsLayer.getBoundingClientRect();
+            
+            // 转换为百分比位置
+            const leftPercent = (x / bowlRect.width) * 100;
+            let topPercent = ((y - (bowlRect.top - toppingsLayerRect.top)) / toppingsLayerRect.height) * 100;
+            
+            // 限制位置在碗内
+            const clampedLeft = Math.max(10, Math.min(leftPercent, 80));
+            const clampedTop = Math.max(5, Math.min(topPercent, 85));
+            
+            toppingElement.style.left = `${clampedLeft}%`;
+            toppingElement.style.top = `${clampedTop}%`;
+            
+            // 随机旋转
+            const rotation = Math.random() * 30 - 15;
+            toppingElement.style.transform = `rotate(${rotation}deg)`;
+            
+            // 添加动画
+            toppingElement.style.animation = 'dropIn 0.3s ease-out, float 4s ease-in-out infinite';
+            toppingElement.style.animationDelay = '0s, 0.3s';
+            
+            toppingsLayer.appendChild(toppingElement);
+            
+            // 显示状态消息
+            showStatusMessage(`添加了${topping.name}！`);
+            
+            // 添加音效（模拟）
+            playSound('splash');
+        }
+        
+        // 清空刨冰碗
+        function clearIce() {
+            iceHeight = 0;
+            iceContent.style.height = '0';
+            iceContent.innerHTML = '';
+            toppingsLayer.innerHTML = '';
+            addedToppings = [];
+            toppingCount = 0;
+            toppingCounter.textContent = `配料: 0`;
+            
+            // 重新添加配料计数器
+            toppingsLayer.appendChild(toppingCounter);
+            
+            // 显示状态消息
+            showStatusMessage("碗已清空！");
+        }
+        
+        // 上菜给顾客
+        function serveIce() {
+            if (!gameActive) {
+                showStatusMessage("请先开始游戏！");
+                return;
+            }
+            
+            if (iceHeight === 0) {
+                showStatusMessage("请先制作刨冰！");
+                return;
+            }
+            
+            if (addedToppings.length === 0) {
+                showStatusMessage("请添加至少一种配料！");
+                return;
+            }
+            
+            // 检查订单匹配度
+            let matched = 0;
+            let total = currentOrder.length;
+            
+            // 检查每个订单配料是否已添加
+            currentOrder.forEach(orderTopping => {
+                if (addedToppings.some(added => added.id === orderTopping.id)) {
+                    matched++;
+                }
+            });
+            
+            // 检查是否有额外添加的配料
+            const extraToppings = addedToppings.filter(added => 
+                !currentOrder.some(order => order.id === added.id)
+            );
+            
+            // 计算分数
+            const matchPercentage = total > 0 ? matched / total : 0;
+            const penalty = extraToppings.length * 0.1;
+            const finalMatch = Math.max(0, matchPercentage - penalty);
+            
+            // 基础分 + 匹配度加分 + 冰块奖励
+            const iceBonus = iceHeight / 20 * 5; // 每层冰块加5分
+            const orderScore = Math.floor(100 * finalMatch + iceBonus);
+            
+            // 更新分数
+            score += orderScore;
+            
+            // 更新订单完成数
+            ordersCompleted++;
+            
+            // 清空碗
+            clearIce();
+            
+            // 生成新订单或结束游戏
+            if (ordersCompleted >= totalOrders) {
+                endGame(true);
+            } else {
+                generateOrder();
+            }
+            
+            // 更新UI
+            updateUI();
+            
+            // 显示反馈
+            showFeedback(finalMatch, orderScore);
+        }
+        
+        // 显示反馈消息
+        function showFeedback(matchPercentage, points) {
+            let feedbackText = '';
+            let feedbackColor = '';
+            
+            if (matchPercentage >= 0.9) {
+                feedbackText = `完美匹配！+${points}分`;
+                feedbackColor = '#4caf50';
+            } else if (matchPercentage >= 0.7) {
+                feedbackText = `很不错！+${points}分`;
+                feedbackColor = '#8bc34a';
+            } else if (matchPercentage >= 0.5) {
+                feedbackText = `还可以！+${points}分`;
+                feedbackColor = '#ffc107';
+            } else {
+                feedbackText = `需要改进！+${points}分`;
+                feedbackColor = '#ff9800';
+            }
+            
+            // 显示状态消息
+            showStatusMessage(feedbackText);
+            
+            // 创建临时反馈元素
+            const feedback = document.createElement('div');
+            feedback.textContent = feedbackText;
+            feedback.style.position = 'fixed';
+            feedback.style.top = '50%';
+            feedback.style.left = '50%';
+            feedback.style.transform = 'translate(-50%, -50%)';
+            feedback.style.backgroundColor = feedbackColor;
+            feedback.style.color = 'white';
+            feedback.style.padding = '15px 30px';
+            feedback.style.borderRadius = '50px';
+            feedback.style.fontSize = '24px';
+            feedback.style.fontWeight = 'bold';
+            feedback.style.zIndex = '1000';
+            feedback.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+            
+            document.body.appendChild(feedback);
+            
+            // 动画效果
+            setTimeout(() => {
+                feedback.style.transition = 'all 0.5s';
+                feedback.style.opacity = '0';
+                feedback.style.transform = 'translate(-50%, -100%)';
+                
+                setTimeout(() => {
+                    document.body.removeChild(feedback);
+                }, 500);
+            }, 1000);
+        }
+        
+        // 播放音效（模拟）
+        function playSound(soundType) {
+            // 在实际应用中，这里会播放音频文件
+            // 现在只是模拟音效播放
+            console.log(`播放音效: ${soundType}`);
+        }
+        
+        // 更新UI
+        function updateUI() {
+            scoreElement.textContent = score;
+            timeElement.textContent = timeLeft;
+            orderCountElement.textContent = `${ordersCompleted}/${totalOrders}`;
+            
+            // 计算准确率
+            const accuracy = ordersCompleted > 0 ? 
+                Math.min(100, Math.floor((score / (ordersCompleted * 100)) * 100)) : 100;
+            accuracyElement.textContent = `${accuracy}%`;
+        }
+        
+        // 显示状态消息
+        function showStatusMessage(text) {
+            statusMessage.textContent = text;
+            statusMessage.style.display = 'block';
+            
+            // 2秒后隐藏
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 2000);
+        }
+        
+        // 开始游戏
+        function startGame() {
+            if (gameActive) return;
+            
+            gameActive = true;
+            startBtn.disabled = true;
+            startBtn.innerHTML = '<i class="fas fa-pause"></i> 游戏中';
+            startBtn.style.opacity = '0.7';
+            
+            // 开始计时器
+            gameTimer = setInterval(() => {
+                timeLeft--;
+                timeElement.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    endGame(false);
+                }
+            }, 1000);
+            
+            // 显示提示
+            showMessage('游戏开始！', '根据顾客订单制作刨冰，完成5个订单即可获胜！', false);
+            
+            // 显示状态消息
+            showStatusMessage("游戏开始！请根据订单制作刨冰！");
+        }
+        
+        // 结束游戏
+        function endGame(isWin) {
+            gameActive = false;
+            clearInterval(gameTimer);
+            
+            // 禁用游戏控制按钮
+            makeIceBtn.disabled = true;
+            serveBtn.disabled = true;
+            clearBtn.disabled = true;
+            
+            // 显示游戏结束消息
+            if (isWin) {
+                messageTitle.textContent = '恭喜获胜！';
+                messageText.textContent = `你成功完成了${totalOrders}个订单！`;
+            } else {
+                messageTitle.textContent = '时间到！';
+                messageText.textContent = '游戏时间已经用完。';
+            }
+            
+            finalScoreElement.textContent = `最终得分: ${score}`;
+            message.style.display = 'block';
+        }
+        
+        // 显示消息
+        function showMessage(title, text, showRestart) {
+            messageTitle.textContent = title;
+            messageText.textContent = text;
+            message.style.display = 'block';
+            
+            // 如果是游戏结束消息，显示重新开始按钮
+            restartBtn.style.display = showRestart ? 'flex' : 'none';
+            
+            // 3秒后自动关闭消息（除非是游戏结束）
+            if (!showRestart) {
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 3000);
+            }
+        }
+        
+        // 重置游戏
+        function resetGame() {
+            clearInterval(gameTimer);
+            gameActive = false;
+            startBtn.disabled = false;
+            startBtn.innerHTML = '<i class="fas fa-play"></i> 开始游戏';
+            startBtn.style.opacity = '1';
+            
+            message.style.display = 'none';
+            initGame();
+        }
+        
+        // 显示帮助
+        function showHelp() {
+            showMessage('游戏帮助', 
+                '1. 点击"开始游戏"按钮开始\n' +
+                '2. 根据左侧顾客订单制作刨冰\n' +
+                '3. 点击"添加冰块"按钮增加冰沙\n' +
+                '4. 拖动配料图标到碗中添加配料\n' +
+                '5. 完成后点击"上菜给顾客"\n' +
+                '6. 匹配度越高，得分越多\n' +
+                '7. 完成5个订单即可获胜！',
+                false);
+        }
+        
+        // 事件监听
+        startBtn.addEventListener('click', startGame);
+        resetBtn.addEventListener('click', resetGame);
+        helpBtn.addEventListener('click', showHelp);
+        restartBtn.addEventListener('click', resetGame);
+        makeIceBtn.addEventListener('click', makeIce);
+        serveBtn.addEventListener('click', serveIce);
+        clearBtn.addEventListener('click', clearIce);
+        
+        // 键盘控制
+        document.addEventListener('keydown', (e) => {
+            if (!gameActive && e.key !== ' ') {
+                showStatusMessage("请先开始游戏！");
+                return;
+            }
+            
+            switch(e.key) {
+                case ' ':
+                case 'Spacebar':
+                    // 空格键添加冰块
+                    e.preventDefault();
+                    makeIce();
+                    break;
+                case 's':
+                case 'S':
+                    // S键上菜
+                    e.preventDefault();
+                    serveIce();
+                    break;
+                case 'c':
+                case 'C':
+                    // C键清空碗
+                    e.preventDefault();
+                    clearIce();
+                    break;
+                case 'Enter':
+                    // Enter键开始游戏
+                    if (!gameActive) {
+                        e.preventDefault();
+                        startGame();
+                    }
+                    break;
+            }
+        });
+        
+        // 初始化游戏
+        initGame();
+        
+        // 显示欢迎消息
+        setTimeout(() => {
+            showMessage('欢迎来到冰雪刨冰！', '点击"开始游戏"按钮开始制作美味的刨冰！', false);
+        }, 500);
+    </script>
+</body>
+</html>
